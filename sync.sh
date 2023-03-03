@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 git tag > local.list
 tags=$(glab release list -R gitlab-org/gitlab-runner | tail -n +3 | awk '{ print $1 }' | grep -vf local.list)
 

@@ -26,6 +26,9 @@ jobs:
       - name: Install manifest-tools
         run: go install github.com/estesp/manifest-tool/v2/cmd/manifest-tool@latest
 
+      - name: Install glab
+        run: go install gitlab.com/gitlab-org/cli/cmd/glab@latest
+
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
