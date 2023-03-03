@@ -11,13 +11,17 @@ for tag in $tags
 do
   for arch in $archs
   do
+    arch_target=$arch
+    if [ $arch_target = "x86_64" ]; then
+      arch_target="amd64"
+    fi
     skopeo copy --dest-creds="$:$GITHUB_TOKEN" \
       docker://registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:alpine-latest-$arch-$tag \
-      docker://ghcr.io/loft-orbital/gitlab-runner-helper:alpine-latest-$arch-$tag
+      docker://ghcr.io/loft-orbital/gitlab-runner-helper:alpine-latest-$arch_target-$tag
   done
   
   manifest-tool push from-args \
-    --platforms linux/x86_64,linux/arm64,linux/arm,linux/s390x,linux/ppc64le \
+    --platforms linux/amd64,linux/arm64,linux/arm,linux/s390x,linux/ppc64le \
     --template ghcr.io/loft-orbital/gitlab-runner-helper:alpine-latest-ARCH-$tag \
     --target ghcr.io/loft-orbital/gitlab-runner-helper:$tag
   gh release create $tag --generate-notes
