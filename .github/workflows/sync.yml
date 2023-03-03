@@ -1,0 +1,32 @@
+name: Synchronize images
+
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '30 5,17 * * *'
+
+env:
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install manifest-tools
+        uses: jaxxstorm/action-install-gh-release@v1.5.0
+        with: # Grab the latest version
+          repo: estesp/manifest-tool
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+      - name: sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./sync.sh
