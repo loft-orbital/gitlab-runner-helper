@@ -5,6 +5,9 @@ on:
     # * is a special character in YAML so you have to quote this string
     - cron:  '30 5,17 * * *'
   workflow_dispatch: {}
+  push:
+   branches:
+    - main
 
 env:
   IMAGE_NAME: ${{ github.repository }}
@@ -18,6 +21,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Install skopeo
+        run: sudo apt-get install -y skopeo
 
       - uses: actions/setup-go@v3
         with:
