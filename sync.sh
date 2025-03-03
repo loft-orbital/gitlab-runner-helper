@@ -19,7 +19,7 @@ do
 	    if [ $arch_target = "x86_64" ]; then
 	      arch_target="amd64"
 	    fi
-	    skopeo copy --dest-creds="$:$GITHUB_TOKEN" \
+	    skopeo copy --override-arch $arch_target --dest-creds="$:$GITHUB_TOKEN" \
 	      docker://registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:$flavor-$arch-$tag \
 	      docker://ghcr.io/loft-orbital/gitlab-runner-helper:$flavor-$arch_target-$tag
 	  done
