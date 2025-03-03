@@ -6,7 +6,7 @@ git tag > local.list
 tags=$(glab release list -R gitlab-org/gitlab-runner | tail -n +3 | awk '{ print $1 }' | grep -vf local.list)
 
 archs="x86_64 arm64 arm s390x ppc64le"
-flavors="alpine3.18 alpine-latest ubuntu"
+flavors="alpine3.21 alpine-latest ubuntu"
 
 for tag in $tags
 do
