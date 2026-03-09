@@ -3,7 +3,7 @@
 set -e
 
 git tag > local.list
-tags=$(glab release list -R gitlab-org/gitlab-runner | tail -n +3 | awk '{ print $1 }' | grep -vf local.list)
+tags=$(curl -s "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-runner/releases?per_page=50" | jq -r '.[].tag_name' | grep -vf local.list)
 
 archs="x86_64 arm64 arm s390x ppc64le"
 flavors="alpine3.21 alpine-latest ubuntu"

@@ -20,20 +20,15 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install skopeo
         run: sudo apt-get install -y skopeo
 
-      - uses: actions/setup-go@v3
-        with:
-          go-version: 'stable'
-
-      - name: Install manifest-tools
-        run: go install github.com/estesp/manifest-tool/v2/cmd/manifest-tool@latest
-
-      - name: Install glab
-        run: go install gitlab.com/gitlab-org/cli/cmd/glab@latest
+      - name: Install manifest-tool
+        run: |
+          curl -sL https://github.com/estesp/manifest-tool/releases/latest/download/binaries-manifest-tool-2-linux-amd64.tar.gz | tar xz
+          sudo mv manifest-tool /usr/local/bin/
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
